@@ -35,4 +35,16 @@ router.post('/', (ctx) => {
   ctx.body = '创建用户'
 })
 
+// 接口: 获取id=1的用户编写的article=1
+router.get('/:id/article/:aid', (ctx) => {
+  console.log(ctx.params)
+  // 没有通过ctx.body返回数据时, 默认koa返回404错误
+  a.b
+  if (false) {
+    ctx.body = { id: 1, title: '文章1', content: '文章1' }
+  } else {
+    return ctx.app.emit('error', { code: 404, message: '资源没有找到' }, ctx)
+  }
+})
+
 module.exports = router
