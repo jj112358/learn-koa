@@ -9,10 +9,16 @@ const db = [
   { id: 3, name: 'xiaopang', age: 2 },
 ]
 // 3.3 编写路由规则
-// GET /users ---- 获取所有的用户信息, 返回一个数组
+// GET /users?start=18&end=20 ---- 获取所有的用户信息, 返回一个数组
 router.get('/', (ctx) => {
+  // 通过 ctx.query 是ctx.request.query的代理 解析键值对参数
+  const { start = 0, end = 0 } = ctx.query
+
+  if (start <= end) ctx.throw(422)
+
+  const res = db.filter((item) => item.age >= start && item.age <= end)
   // 解析键值对
-  ctx.body = db
+  res.length == 0 ? ctx.throw(404) : (ctx.body = res)
 })
 // GET /users/:id ---- 根据id获取单个用户的信息, 返回一个对象
 router.get('/:id', (ctx) => {
@@ -25,6 +31,7 @@ router.get('/:id', (ctx) => {
   ctx.body = res[0]
 })
 router.post('/', (ctx) => {
+  console.log(ctx.request.body)
   ctx.body = '创建用户'
 })
 
